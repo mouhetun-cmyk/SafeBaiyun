@@ -15,15 +15,18 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # 直接安装 Gradle，并指定版本（请根据你项目的 gradle-wrapper.properties 文件填写）
+      # 禁用 Gradle 缓存，避免读到损坏的缓存数据
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.14.2' # 替换为你项目需要的版本
+          cache-disabled: true
 
-      # 注意：这里直接调用 gradle 命令，而不是 ./gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # 强制刷新所有依赖，忽略本地缓存直接连仓库检查
       - name: Build Debug APK
-        run: gradle assembleDebug
+        run: ./gradlew assembleDebug --refresh-dependencies
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
