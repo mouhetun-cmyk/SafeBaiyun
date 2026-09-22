@@ -1,6 +1,6 @@
-nname: Build APK
-oon: [push, workflow_dispatch]
-jjobs:
+name: Build APK
+on: [push, workflow_dispatch]
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
