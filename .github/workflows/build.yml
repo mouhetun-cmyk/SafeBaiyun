@@ -25,21 +25,6 @@ jobs:
           gradle-version: '8.9'
           validate-wrappers: false
 
-      - name: Configure Aliyun Mirror
-        run: |
-          mkdir -p ~/.gradle
-          cat > ~/.gradle/init.gradle << 'EOF'
-          allprojects {
-              repositories {
-                  maven { url 'https://maven.aliyun.com/repository/public' }
-                  maven { url 'https://maven.aliyun.com/repository/google' }
-                  maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
-                  google()
-                  mavenCentral()
-              }
-          }
-          EOF
-
       - name: Build Debug APK
         run: gradle assembleDebug
         timeout-minutes: 40
