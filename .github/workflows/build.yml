@@ -16,11 +16,7 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      # 使用阿里云镜像加速依赖下载，避免卡在 Computing updates
-      - name: Add Aliyun Maven Mirror
+      - name: Configure Aliyun Mirror
         run: |
           mkdir -p ~/.gradle
           cat > ~/.gradle/init.gradle << 'EOF'
@@ -35,9 +31,12 @@ jobs:
           }
           EOF
 
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --refresh-dependencies
-        timeout-minutes: 30
+        run: ./gradlew assembleDebug --offline
+        timeout-minutes: 20
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
